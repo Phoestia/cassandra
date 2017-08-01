@@ -1,0 +1,78 @@
+create keyspace assignment with replication = 
+{'class':'SimpleStrategy', 'replication_factor' : 6 };
+
+CREATE TABLE assignment.university (
+name varchar,
+phone int,
+address text,
+primary key (name)
+);
+
+CREATE TABLE assignment.course (
+course_name varchar,
+id UUID,
+cost int,
+Course_Registration_Date date,
+primary key (id)
+);
+
+CREATE TABLE assignment.person (
+name varchar,
+phone int,
+address varchar,
+primary key (name)
+);
+
+insert into assignment.university (name, phone, address) values
+ ('University of Toronto', 123456789, 'Toronto');
+ insert into assignment.university (name, phone, address) values
+ ('University of British Columbia', 234567890, 'Vancouver');
+ insert into assignment.university (name, phone, address) values
+ ('University of California', 345678901, 'Calibratia');
+
+select * from assignment.university;
+
+insert into assignment.course (course_name, id, cost, Course_Registration_Date) values
+ ('Data Sciences', 1212, 3500, 2018-01-01);
+insert into assignment.course (course_name, id, cost, Course_Registration_Date) values
+ ('Data Sciences', 2375, 4800, 2018-06-01);
+insert into assignment.course (course_name, id, cost, Course_Registration_Date) values
+ ('Data Sciences', 4583, 5100, 2017-09-01);
+
+select * from assignment.course;
+
+insert into assignment.person (name, phone, address) values
+ ('John Smith', 4161238875, 'Toronto');
+insert into assignment.person (name, phone, address) values
+ ('Harry Willson', 5213398188, 'New York');
+insert into assignment.person (name, phone, address) values
+ ('Tom Austin', 4162213324, 'California'); 
+
+select * from assignment.person;
+
+//Q1
+Select address as Q1_address from assignment.person 
+where name = 'John Smith';
+
+//Q2
+select * from assignment.university as university_near
+where assignment.university.address = Q1_address;
+
+//Q3
+Select * from assignment.university
+where name = 'University of Toronto';
+
+//Q4
+Select name from assignment.person as Q3_name
+where address in assignment.university.address;
+
+//Q5
+select dateof(now()) as today;
+Select course_name from assignment.course
+where assignment.course.Course_Registration_Date > today
+and assignment.university.name in university_near.name;
+
+//Q6
+Select * from assignment.person
+where name in Q3_name;
+
